@@ -87,7 +87,7 @@
                         @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                      <h6 class="p-3 mb-0">Notifications</h6>
+                      <h6 class="p-3 mb-0">Created Ticket Tody</h6>
 
                         @foreach ($tickets as $ticket )
 
@@ -111,34 +111,30 @@
                 @endif
 
                 @php
-                    $approvals = App\Models\Ticket::where('approval', 1)
-                                ->whereDate('updated_at', Carbon::today())
-                                ->latest()
-                                ->get();
+                    $tickets = App\Models\ClosedTicket::whereDate('created_at', Carbon::today())->latest()->get();
                 @endphp
-
                 @if ($user->role === 'customer')
                   <li class="nav-item dropdown border-left">
-                      @if ($approvals)
-                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-                        <i class="mdi mdi-bell"></i>
-                            <span class="count bg-danger" style="width:20px;height:15px">{{ $approvals->count() }}</span>
-                        </a>
-                    @endif
+                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                      <i class="mdi mdi-bell"></i>
+                        @if ($tickets)
+                         <span class="count bg-danger" style="width:20px;height:15px">{{ $tickets->count() }}</span>
+                        @endif
+                    </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                      <h6 class="p-3 mb-0">Closed tickets</h6>
+                      <h6 class="p-3 mb-0">Closed Ticket tody</h6>
 
-                        @foreach ($approvals as $approval )
+                        @foreach ($tickets as $ticket )
 
                             <div class="dropdown-divider"></div>
-                            <a href="{{ route('tickets.show', $approval->id) }}" class="dropdown-item preview-item">
+                            <a href="{{ route('tickets.show', $ticket->id) }}" class="dropdown-item preview-item">
                             <div class="preview-thumbnail">
                                 <div class="preview-icon bg-dark rounded-circle">
                                 <i class="mdi mdi-calendar text-success"></i>
                                 </div>
                             </div>
                             <div class="preview-item-content">
-                                <p class="preview-subject mb-1">{{ $approval->subject }}</p></div>
+                                <p class="preview-subject mb-1">{{ $ticket->subject }}</p></div>
                             </a>
                             <div class="dropdown-divider"></div>
 

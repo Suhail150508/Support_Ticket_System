@@ -62,7 +62,7 @@ class HomeController extends Controller
         $user->save();
 
         Toastr::success('User Registered Successfully', 'Title', ["positionClass" => "toast-top-right"]);
-        return redirect()->route('login');
+        return redirect('/');
     } catch (\Exception $e) {
         Toastr::success('Error has found', 'Title', ["positionClass" => "toast-top-right"]);
         return redirect('/');

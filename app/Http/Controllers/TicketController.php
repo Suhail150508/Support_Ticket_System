@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use Illuminate\Http\Request;
 use App\Mail\TicketCreated;
 use App\Mail\TicketClosed;
+use App\Models\ClosedTicket;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Mail;
@@ -118,11 +119,19 @@ class TicketController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $ticket = Ticket::findOrFail($id);
+
         $ticket->update([
             'status' => 'closed',
-            'approval' => 'one',
         ]);
 
+        $user = Session()->get('user');
+        
+        $close = new ClosedTicket();
+        $close->user_id = $user->id;
+        $close->subject = $ticket->subject;
+        $close->description = $ticket->description;
+        $close->status = $ticket->status;
+        $close->save();
         // Send email to customer
         $user = User::where('id',$ticket->user_id)->first();
         Mail::to($user->email)->send(new TicketClosed($ticket));
