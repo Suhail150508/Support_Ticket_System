@@ -87,12 +87,12 @@
                         @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                      <h6 class="p-3 mb-0">Created Ticket Tody</h6>
+                      <h6 class="p-3 mb-0">Today Created Tickets </h6>
 
                         @foreach ($tickets as $ticket )
 
                             <div class="dropdown-divider"></div>
-                            <a href="{{ route('tickets.show', $ticket->id) }}" class="dropdown-item preview-item">
+                            <a href="{{ route('tickets.view', $ticket->id) }}" class="dropdown-item preview-item">
                             <div class="preview-thumbnail">
                                 <div class="preview-icon bg-dark rounded-circle">
                                 <i class="mdi mdi-calendar text-success"></i>
@@ -122,12 +122,11 @@
                         @endif
                     </a>
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                      <h6 class="p-3 mb-0">Closed Ticket tody</h6>
+                      <h6 class="p-3 mb-0">Closed ticket by admin tody</h6>
 
                         @foreach ($tickets as $ticket )
-
                             <div class="dropdown-divider"></div>
-                            <a href="{{ route('tickets.show', $ticket->id) }}" class="dropdown-item preview-item">
+                            <a href="{{ route('notification.view', $ticket->id) }}" class="dropdown-item preview-item">
                             <div class="preview-thumbnail">
                                 <div class="preview-icon bg-dark rounded-circle">
                                 <i class="mdi mdi-calendar text-success"></i>

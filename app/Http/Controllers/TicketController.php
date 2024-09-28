@@ -64,6 +64,11 @@ class TicketController extends Controller
         $ticket = Ticket::findOrFail($id);
         return view('tickets.ticket_show', compact('ticket'));
     }
+    public function notificationView($id)
+    {
+        $ticket = ClosedTicket::findOrFail($id);
+        return view('tickets.notification_show', compact('ticket'));
+    }
     public function edit($id)
     {
        $ticket = Ticket::findOrFail($id);
@@ -125,7 +130,7 @@ class TicketController extends Controller
         ]);
 
         $user = Session()->get('user');
-        
+
         $close = new ClosedTicket();
         $close->user_id = $user->id;
         $close->subject = $ticket->subject;
@@ -142,18 +147,33 @@ class TicketController extends Controller
 
     public function delete($id)
     {
-       $ticket = Ticket::findOrFail($id)->delete();
+       $ticket = Ticket::findOrFail($id);
+       $subject = $ticket->subject;
+       $ticket->delete();
+
+       $close = ClosedTicket::where('subject', $subject)->first();
+       if ($close) {
+           $close->delete();
+       }
        Toastr::success('Ticket Deleted Successfully', 'Title', ["positionClass" => "toast-top-right"]);
        return redirect('admin-ticket');
     }
 
     public function customerTicketDelete($id)
     {
-       $ticket = Ticket::findOrFail($id)->delete();
+        $ticket = Ticket::findOrFail($id);
+        $subject = $ticket->subject;
+        $ticket->delete();
 
-       Toastr::success('Ticket Deleted Successfully', 'Title', ["positionClass" => "toast-top-right"]);
-       return redirect('customer-ticket');
+        $close = ClosedTicket::where('subject', $subject)->first();
+        if ($close) {
+            $close->delete();
+        }
+
+        Toastr::success('Ticket Deleted Successfully', 'Title', ["positionClass" => "toast-top-right"]);
+        return redirect('customer-ticket');
     }
+
 }
 
 

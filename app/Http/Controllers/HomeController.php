@@ -16,32 +16,32 @@ class HomeController extends Controller
     public function login(){
         return view('/login');
     }
-    public function loginStore(Request $request){
+    public function loginStore(Request $request)
+    {
 
-        $user = User::where('email',$request->email)->first();
+            $user = User::where('email', $request->email)->first();
 
-        if($user && $user->role === 'admin'){
+            if ($user && $user->role === 'admin') {
+                session()->put('user', $user);
+                $tickets = Ticket::paginate(15);
+                Toastr::success('Admin logged in successfully', 'Title', ["positionClass" => "toast-top-right"]);
+                return view('admin.dashboard', compact('tickets'));
 
-            Session()->put('user',$user);
-            $tickets = Ticket::paginate(15);
-            Toastr::success('Admin logged in successfully', 'Title', ["positionClass" => "toast-top-right"]);
-            return view('admin.dashboard', compact('tickets'));
-        }
-        elseif($user && $user->role === 'customer'){
+            } elseif ($user && $user->role === 'customer') {
+                session()->put('user', $user);
+                $user = User::with('tickets')->find($user->id);
+                $tickets = $user->tickets()->paginate(15);
+                Toastr::success('Customer logged in successfully', 'Title', ["positionClass" => "toast-top-right"]);
+                return view('customer.dashboard', compact('tickets'));
+            }else{
 
-            Session()->put('user',$user);
-            $user = User::with('tickets')->find($user->id);
-            $tickets = $user->tickets()->paginate(15);
+                Toastr::error('Credentials do not match', 'Error', ["positionClass" => "toast-top-right"]);
+                return redirect()->to('/login');
 
-            Toastr::success('Customer logged in successfully', 'Title', ["positionClass" => "toast-top-right"]);
-            return view('customer.dashboard', compact('tickets'));
-        }else{
+            }
 
-            Toastr::success('Credentials does not match', 'Title', ["positionClass" => "toast-top-right"]);
-            return redirect()->to('/login');
-
-        }
     }
+
     public function register(){
         return view('register');
     }
@@ -53,26 +53,22 @@ class HomeController extends Controller
             'password' => 'required|min:6|',
             'role' => 'required|in:admin,customer',
         ]);
-    try{
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->role = $request->role;
-        $user->save();
+            $user = new User();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->role = $request->role;
+            $user->save();
 
-        Toastr::success('User Registered Successfully', 'Title', ["positionClass" => "toast-top-right"]);
-        return redirect('/');
-    } catch (\Exception $e) {
-        Toastr::success('Error has found', 'Title', ["positionClass" => "toast-top-right"]);
-        return redirect('/');
-    }
-    }
+            Toastr::success('User Registered Successfully', 'Title', ["positionClass" => "toast-top-right"]);
+            return redirect('/');
+
+        }
     public function logout(){
 
-        Session::flush();
+            Session::flush();
 
-    Toastr::success(' logged out successfully', 'Title', ["positionClass" => "toast-top-right"]);
-    return redirect('/');
+            Toastr::success(' logged out successfully', 'Title', ["positionClass" => "toast-top-right"]);
+            return redirect('/');
     }
 }

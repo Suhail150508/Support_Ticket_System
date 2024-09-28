@@ -34,6 +34,7 @@ Route::get('/tickets-edit/{id}', [TicketController::class, 'edit']);
 Route::put('/tickets-update/{id}', [TicketController::class, 'update'])->name('update');
 Route::get('/tickets/{id}', [TicketController::class, 'show'])->name('tickets.show');
 Route::get('/tickets-view/{id}', [TicketController::class, 'view'])->name('tickets.view');
+Route::get('/notification-view/{id}', [TicketController::class, 'notificationView'])->name('notification.view');
 Route::delete('/admin-tickets-delete/{id}', [TicketController::class, 'delete']);
 Route::delete('/customer-tickets-delete/{id}', [TicketController::class, 'customerTicketDelete']);
 Route::post('/tickets/{ticket}/close', [TicketController::class, 'updateStatus'])->name('tickets.updateStatus');

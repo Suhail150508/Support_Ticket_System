@@ -96,7 +96,7 @@
 </head>
 <body>
     <div>
-        <a href="{{ url('admin-ticket') }}" class="btn btn-primary" style="float: right;margin-top:-15rem">Back</a>
+        <a href="{{ url('customer-ticket') }}" class="btn btn-primary" style="float: right;margin-top:-15rem">Back</a>
     </div>
     <div class="container">
         <!-- Ticket Header Section -->
@@ -127,21 +127,8 @@
             </tr>
         </table>
 
-        <!-- Ticket Footer (Buttons for Admin Actions) -->
-        <div class="ticket-footer">
-            @php
-                $user = Session()->get('user');
-            @endphp
-
-            @if($user && $user->role == 'admin' && $ticket->status == 'pending')
-            <!-- Button to Close the Ticket -->
-            <form action="{{ route('tickets.updateStatus', $ticket->id) }}" method="POST" style="display: inline;">
-                @csrf
-                <button type="submit" class="btn btn-danger">Close Ticket</button>
-            </form>
-            @endif
-        </div>
     </div>
+
 
     <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
     <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
