@@ -10,4 +10,4 @@
 ## About Laravel
 
 <h1>Flow the instructions</h1>
-"First, register a customer. Then, create a ticket from customer panel or dashboard. Finally, check the other functionalities."
+"At first, register a customer. Then, create a ticket from customer panel or dashboard. Finally, check the other functionalities."

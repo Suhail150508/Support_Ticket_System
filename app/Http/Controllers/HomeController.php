@@ -30,8 +30,8 @@ class HomeController extends Controller
         elseif($user && $user->role === 'customer'){
 
             Session()->put('user',$user);
-            $user = User::with('tickets')->find($user->id)->paginate(15);
-            $tickets = $user->tickets();
+            $user = User::with('tickets')->find($user->id);
+            $tickets = $user->tickets()->paginate(15);
 
             Toastr::success('Customer logged in successfully', 'Title', ["positionClass" => "toast-top-right"]);
             return view('customer.dashboard', compact('tickets'));
