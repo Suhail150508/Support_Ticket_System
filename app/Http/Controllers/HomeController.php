@@ -23,14 +23,14 @@ class HomeController extends Controller
         if($user && $user->role === 'admin'){
 
             Session()->put('user',$user);
-            $tickets = Ticket::paginage(15);
+            $tickets = Ticket::paginate(15);
             Toastr::success('Admin logged in successfully', 'Title', ["positionClass" => "toast-top-right"]);
             return view('admin.dashboard', compact('tickets'));
         }
         elseif($user && $user->role === 'customer'){
 
             Session()->put('user',$user);
-            $user = User::with('tickets')->find($user->id)->paginage(15);
+            $user = User::with('tickets')->find($user->id)->paginate(15);
             $tickets = $user->tickets();
 
             Toastr::success('Customer logged in successfully', 'Title', ["positionClass" => "toast-top-right"]);

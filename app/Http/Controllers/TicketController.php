@@ -102,7 +102,7 @@ class TicketController extends Controller
     public function adminTicket()
     {
         $user = Session()->get('user');
-        $tickets = Ticket::all();
+        $tickets = Ticket::paginate(15);
         return view('admin.dashboard', compact('tickets'));
 
     }
